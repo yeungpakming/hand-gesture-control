@@ -11,9 +11,26 @@ window_name = "Gesture Control"
 
 class landmark_label(IntEnum):
     WRIST = 0
+    THUMB_CMC = 1
+    THUMB_MCP = 2
+    THUMB_IP = 3
     THUMB_TIP = 4
+    INDEX_FINGER_MCP = 5
+    INDEX_FINGER_PIP = 6
+    INDEX_FINGER_DIP = 7
     INDEX_FINGER_TIP = 8
+    MIDDLE_FINGER_MCP = 9
+    MIDDLE_FINGER_PIP = 10
+    MIDDLE_FINGER_DIP = 11
     MIDDLE_FINGER_TIP = 12
+    RING_FINGER_MCP = 13
+    RING_FINGER_PIP = 14
+    RING_FINGER_DIP = 15
+    RING_FINGER_TIP = 16
+    PINKY_MCP = 17
+    PINKY_PIP = 18
+    PINKY_DIP = 19
+    PINKY_TIP = 20
 
 
 class hand_gesture_recognizer:
@@ -22,8 +39,8 @@ class hand_gesture_recognizer:
         static_image_mode=False,
         max_num_hands=1,
         model_complexity=1,
-        min_detection_confidence=0.5,
-        min_tracking_confidence=0.5,
+        min_detection_confidence=0.7,
+        min_tracking_confidence=0.7,
     ):
         self.static_image_mode = static_image_mode
         self.max_num_hands = max_num_hands
@@ -42,6 +59,9 @@ class hand_gesture_recognizer:
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_drawing_styles = mp.solutions.drawing_styles
         self.screen_size = pyautogui.size()
+        self.status = False
+        self.old_x = 0
+        self.old_y = 0
 
     def hand_detector(self, frame):
         self.width, self.height, self.channel = frame.shape
@@ -65,12 +85,14 @@ class hand_gesture_recognizer:
 
     def get_position(self, label):
         if self.result.multi_hand_landmarks:
+            self.status = True
             for hand_landmark in self.result.multi_hand_landmarks:
                 return (
                     hand_landmark.landmark[label].x,
                     hand_landmark.landmark[label].y,
                 )
-        return (None, None)
+        self.status = False
+        return (self.old_x, self.old_y)
 
     def distance(self, label_1, label_2):
         x_1, y_1 = self.get_position(label_1)
@@ -78,14 +100,18 @@ class hand_gesture_recognizer:
         return math.sqrt((x_1 - x_2) ** 2 + (y_1 - y_2) ** 2)
 
     def convert_position(self, position):
-        x, y = position
-        if x is None:
-            return (x, y)
-        return ((1 - x) * self.screen_size[0], y * self.screen_size[1])
+        if self.status:
+            x, y = position
+            return ((1 - x) * self.screen_size[0], y * self.screen_size[1])
+        return (self.old_x, self.old_y)
 
-    def mouse_move(self, label):
+    def mouse_move(self, label, smoothing_factor=0.5):
         x, y = self.convert_position(self.get_position(label))
-        pyautogui.moveTo(x, y, _pause=False)
+        if self.status:
+            x = smoothing_factor * x + (1 - smoothing_factor) * self.old_x
+            y = smoothing_factor * y + (1 - smoothing_factor) * self.old_y
+            pyautogui.moveTo(x, y, _pause=False)
+            self.old_x, self.old_y = x, y
 
 
 def main():
@@ -118,6 +144,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-#add hand.status to deal with position being None

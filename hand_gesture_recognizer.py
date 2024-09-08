@@ -58,8 +58,8 @@ class hand_gesture_recognizer:
         self.mp_drawing_styles = mp.solutions.drawing_styles
         self.screen_size = pyautogui.size()
         self.status = False
-        self.old_x = 0.5
-        self.old_y = 0.5
+        self.x = 0.5
+        self.y = 0.5
 
     def hand_detector(self, frame):
         self.width, self.height, self.channel = frame.shape
@@ -84,22 +84,15 @@ class hand_gesture_recognizer:
     def get_position(self, label):
         if self.result.multi_hand_landmarks:
             for hand_landmark in self.result.multi_hand_landmarks:
-                x = hand_landmark.landmark[label].x
-                y = hand_landmark.landmark[label].y
-            x = self.smoothing_factor * x + (1 - self.smoothing_factor) * self.old_x
-            y = self.smoothing_factor * y + (1 - self.smoothing_factor) * self.old_y
-            self.old_x, self.old_y = x, y
-            return (self.old_x, self.old_y)
-        return (self.old_x, self.old_y)
+                new_x = hand_landmark.landmark[label].x
+                new_y = hand_landmark.landmark[label].y
+            self.x, self.y = new_x, new_y
+        return (self.x, self.y)
 
-    def distance(self, label_1, label_2):
+    def get_distance(self, label_1, label_2):
         x_1, y_1 = self.get_position(label_1)
         x_2, y_2 = self.get_position(label_2)
         return math.sqrt((x_1 - x_2) ** 2 + (y_1 - y_2) ** 2)
-
-    def screen_position(self, label):
-        x, y = self.get_position(label)
-        return ((1 - x) * self.screen_size[0], y * self.screen_size[1])
 
 
 def main():

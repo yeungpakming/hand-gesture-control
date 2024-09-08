@@ -33,3 +33,4 @@ class mouse_controller:
         self.distance = self.screen_distance(distance)
         if self.distance < self.actuation_distance and self.status:
             pyautogui.click(_pause=False)
+            self.status = False

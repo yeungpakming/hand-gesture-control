@@ -13,9 +13,6 @@ def main():
     label = hgr.landmark_label
     mouse = mc.mouse_controller()
 
-    # cTime = 0
-    # pTime = 0
-
     while cv2.waitKey(1) != 27:
         has_frame, frame = source.read()
         if not has_frame:
@@ -26,14 +23,6 @@ def main():
         mouse.left_click(
             recognizer.get_distance(label.INDEX_FINGER_TIP, label.THUMB_TIP)
         )
-
-        #     # cTime = time.time()
-        #     # fps = 1 / (cTime - pTime)
-        #     # pTime = cTime
-        #     # cv2.putText(
-        #     #     frame, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3
-        #     # )
-
         cv2.imshow(window_name, cv2.flip(frame, 1))
 
     source.release()

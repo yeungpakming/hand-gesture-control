@@ -13,6 +13,8 @@ def main():
     label = hgr.landmark_label
     mouse = mc.mouse_controller()
 
+    # the time module is used for checking fps(i commented), i just copy this part of the code from somewhere :P so will remove upon finishing the project; or i'll write my own
+    # the text is flipped, because cv2.imshow flipping the frame, still readable so lazy to fix
     # cTime = 0
     # pTime = 0
 

@@ -9,12 +9,12 @@ def main():
     window_name = "Gesture Control"
     source = cv2.VideoCapture(camera)
     cv2.namedWindow(window_name)
+    time_old = 0
+    time_now = 0
+
     recognizer = hgr.hand_gesture_recognizer()
     label = hgr.landmark_label
     mouse = mc.mouse_controller()
-
-    time_old = 0
-    time_now = 0
 
     while cv2.waitKey(1) != 27:
         has_frame, frame = source.read()
@@ -29,7 +29,7 @@ def main():
         mouse.right_click(
             recognizer.get_distance(label.MIDDLE_FINGER_TIP, label.THUMB_TIP)
         )
-
+        # frame rate display
         frame = cv2.flip(frame, 1)
         time_now = time.time()
         fps = 1 / (time_now - time_old)

@@ -12,6 +12,7 @@ class mouse_controller:
         self.actuation_distance = actuation_distance
         self.reset_distance = reset_distance
         self.click_status = "released"
+        self.frame_count = 0
 
     def screen_position(self, position):
         x, y = position
@@ -36,7 +37,6 @@ class mouse_controller:
         distance = self.screen_distance(distance)
         if distance < self.actuation_distance:
             self.click_status = "pressed"
-        if self.click_status == "pressed":
             pyautogui.mouseDown(_pause=False)
         if (distance > self.reset_distance) and (self.click_status == "pressed"):
             self.click_status = "released"

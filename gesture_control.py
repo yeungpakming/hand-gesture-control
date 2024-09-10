@@ -22,9 +22,12 @@ def main():
             print("Ignoring empty camera frame.")
             continue
         frame = recognizer.hand_detector(frame)
-        mouse.move(recognizer.get_position(label.MIDDLE_FINGER_MCP))
+        mouse.move(recognizer.get_position(label.WRIST))
         mouse.left_click(
             recognizer.get_distance(label.INDEX_FINGER_TIP, label.THUMB_TIP)
+        )
+        mouse.right_click(
+            recognizer.get_distance(label.MIDDLE_FINGER_TIP, label.THUMB_TIP)
         )
 
         frame = cv2.flip(frame, 1)
@@ -32,7 +35,7 @@ def main():
         fps = 1 / (time_now - time_old)
         time_old = time_now
         cv2.putText(
-            frame, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (115, 255, 0), 3
+            frame, str(int(fps)), (10, 30), cv2.FONT_HERSHEY_PLAIN, 2, (115, 255, 0), 3
         )
 
         cv2.imshow(window_name, frame)

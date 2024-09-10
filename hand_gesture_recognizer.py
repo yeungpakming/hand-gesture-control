@@ -2,7 +2,6 @@ import cv2
 import mediapipe as mp
 from enum import IntEnum
 import math
-import pyautogui
 
 
 class landmark_label(IntEnum):
@@ -56,12 +55,10 @@ class hand_gesture_recognizer:
         )
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_drawing_styles = mp.solutions.drawing_styles
-        self.screen_size = pyautogui.size()
         self.x = 0.5
         self.y = 0.5
 
     def hand_detector(self, frame):
-        self.width, self.height, self.channel = frame.shape
         frame.flags.writeable = False
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         self.result = self.hand_landmarker.process(frame)

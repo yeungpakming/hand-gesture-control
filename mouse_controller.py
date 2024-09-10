@@ -21,13 +21,18 @@ class mouse_controller:
         return distance * self.scaling_factor
 
     def move(self, position):
-        new_x, new_y = self.screen_position(position)
-        new_x = self.smoothing_factor * new_x + (1 - self.smoothing_factor) * self.x
-        new_y = self.smoothing_factor * new_y + (1 - self.smoothing_factor) * self.y
-        self.x, self.y = new_x, new_y
+        if position == None:
+            return
+        x_new, y_new = self.screen_position(position)
+        x_new = self.smoothing_factor * x_new + (1 - self.smoothing_factor) * self.x
+        y_new = self.smoothing_factor * y_new + (1 - self.smoothing_factor) * self.y
+        self.x, self.y = x_new, y_new
         pyautogui.moveTo(self.x, self.y, _pause=False)
+        return
 
     def left_click(self, distance):
+        if distance == None:
+            return
         distance = self.screen_distance(distance)
         if distance < self.actuation_distance:
             self.click_status = "pressed"
@@ -36,3 +41,4 @@ class mouse_controller:
         if (distance > self.reset_distance) and (self.click_status == "pressed"):
             self.click_status = "released"
             pyautogui.mouseUp(_pause=False)
+        return

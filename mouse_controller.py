@@ -3,7 +3,7 @@ import math
 
 
 class mouse_controller:
-    def __init__(self, smoothing_factor=0.3, actuation_distance=40, reset_distance=60):
+    def __init__(self, smoothing_factor=0.3, actuation_distance=40, reset_distance=50):
         self.smoothing_factor = smoothing_factor
         self.screen_size = pyautogui.size()
         self.scaling_factor = math.sqrt(self.screen_size[0] * self.screen_size[1])
@@ -11,8 +11,8 @@ class mouse_controller:
         self.y = 0.5 * self.screen_size[1]
         self.actuation_distance = actuation_distance
         self.reset_distance = reset_distance
-        self.click_status = "released"
-        self.frame_count = 0
+        self.left_click_status = "released"
+        self.right_click_status = "released"
 
     def screen_position(self, position):
         x, y = position
@@ -35,10 +35,24 @@ class mouse_controller:
         if distance == None:
             return
         distance = self.screen_distance(distance)
-        if distance < self.actuation_distance:
-            self.click_status = "pressed"
-            pyautogui.mouseDown(_pause=False)
-        if (distance > self.reset_distance) and (self.click_status == "pressed"):
-            self.click_status = "released"
-            pyautogui.mouseUp(_pause=False)
+        if (distance < self.actuation_distance) and (
+            self.left_click_status == "released"
+        ):
+            self.left_click_status = "pressed"
+            pyautogui.leftClick(_pause=False)
+        if distance > self.reset_distance:
+            self.left_click_status = "released"
+        return
+
+    def right_click(self, distance):
+        if distance == None:
+            return
+        distance = self.screen_distance(distance)
+        if (distance < self.actuation_distance) and (
+            self.right_click_status == "released"
+        ):
+            self.right_click_status = "pressed"
+            pyautogui.rightClick(_pause=False)
+        if distance > self.reset_distance:
+            self.right_click_status = "released"
         return

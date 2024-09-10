@@ -35,8 +35,8 @@ class hand_gesture_recognizer:
         static_image_mode=False,
         max_num_hands=1,
         model_complexity=1,
-        min_detection_confidence=0.7,
-        min_tracking_confidence=0.7,
+        min_detection_confidence=0.5,
+        min_tracking_confidence=0.5,
         smoothing_factor=0.3,
     ):
         self.static_image_mode = static_image_mode
@@ -57,7 +57,6 @@ class hand_gesture_recognizer:
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_drawing_styles = mp.solutions.drawing_styles
         self.screen_size = pyautogui.size()
-        self.status = False
         self.x = 0.5
         self.y = 0.5
 
@@ -69,6 +68,7 @@ class hand_gesture_recognizer:
         frame.flags.writeable = True
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 
+        self.has_finger = False
         if self.result.multi_hand_landmarks:
             self.has_finger = True
             for hand_landmark in self.result.multi_hand_landmarks:
@@ -82,17 +82,20 @@ class hand_gesture_recognizer:
         return frame
 
     def get_position(self, label):
-        if self.result.multi_hand_landmarks:
+        if self.has_finger:
             for hand_landmark in self.result.multi_hand_landmarks:
-                new_x = hand_landmark.landmark[label].x
-                new_y = hand_landmark.landmark[label].y
-            self.x, self.y = new_x, new_y
-        return (self.x, self.y)
+                x_new = hand_landmark.landmark[label].x
+                y_new = hand_landmark.landmark[label].y
+            self.x, self.y = x_new, y_new
+            return (self.x, self.y)
+        return None
 
     def get_distance(self, label_1, label_2):
-        x_1, y_1 = self.get_position(label_1)
-        x_2, y_2 = self.get_position(label_2)
-        return math.sqrt((x_1 - x_2) ** 2 + (y_1 - y_2) ** 2)
+        if self.has_finger:
+            x_1, y_1 = self.get_position(label_1)
+            x_2, y_2 = self.get_position(label_2)
+            return math.sqrt((x_1 - x_2) ** 2 + (y_1 - y_2) ** 2)
+        return None
 
 
 def main():

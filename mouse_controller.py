@@ -3,10 +3,17 @@ import math
 
 
 class mouse_controller:
-    def __init__(self, smoothing_factor=0.3, actuation_distance=40, reset_distance=50):
+    def __init__(
+        self,
+        smoothing_factor=0.3,
+        padding=0.3,
+        actuation_distance=40,
+        reset_distance=50,
+    ):
         self.smoothing_factor = smoothing_factor
         self.screen_size = pyautogui.size()
         self.scaling_factor = math.sqrt(self.screen_size[0] * self.screen_size[1])
+        self.padding = padding
         self.x = 0.5 * self.screen_size[0]
         self.y = 0.5 * self.screen_size[1]
         self.actuation_distance = actuation_distance
@@ -16,7 +23,12 @@ class mouse_controller:
 
     def screen_position(self, position):
         x, y = position
-        return ((1 - x) * self.screen_size[0], y * self.screen_size[1])
+        return (
+            (1 - x) * self.screen_size[0] * (1 + self.padding)
+            - self.screen_size[0] * self.padding / 2,
+            y * self.screen_size[1] * (1 + self.padding)
+            - self.screen_size[0] * self.padding / 2,
+        )
 
     def screen_distance(self, distance):
         return distance * self.scaling_factor

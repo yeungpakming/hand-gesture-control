@@ -75,8 +75,7 @@ class gesture_control:
             mouse.right_click(
                 recognizer.get_distance(label.MIDDLE_FINGER_TIP, label.THUMB_TIP)
             )
-            frame = cv2.flip(frame, 1)
-            cv2.imshow(window_name, self.fps_display(frame))
+            cv2.imshow(window_name, self.fps_display(cv2.flip(frame, 1)))
 
         source.release()
         cv2.destroyWindow(window_name)

@@ -28,9 +28,9 @@ class gesture_control:
         self.time_new = 0
 
     def fps_display(self, frame):
-        self.time_now = time.time()
-        fps = 1 / (self.time_now - self.time_old)
-        self.time_old = self.time_now
+        self.time_new = time.time()
+        fps = 1 / (self.time_new - self.time_old)
+        self.time_old = self.time_new
         cv2.putText(
             frame,
             str(int(fps)),

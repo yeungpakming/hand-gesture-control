@@ -12,8 +12,8 @@ class gesture_control:
         min_tracking_confidence=0.5,
         smoothing_factor=0.3,
         padding=0.3,
-        actuation_distance=40,
-        reset_distance=50,
+        actuation_distance=35,
+        reset_distance=45,
         reminder=True,
     ):
         self.camera = camera
@@ -24,6 +24,23 @@ class gesture_control:
         self.actuation_distance = actuation_distance
         self.reset_distance = reset_distance
         self.reminder = reminder
+        self.time_old = 0
+        self.time_new = 0
+
+    def fps_display(self, frame):
+        self.time_now = time.time()
+        fps = 1 / (self.time_now - self.time_old)
+        self.time_old = self.time_now
+        cv2.putText(
+            frame,
+            str(int(fps)),
+            (10, 30),
+            cv2.FONT_HERSHEY_PLAIN,
+            2,
+            (115, 255, 0),
+            3,
+        )
+        return frame
 
     def run(self):
         message = "please press the escape key to quit the program"
@@ -32,8 +49,6 @@ class gesture_control:
         source = cv2.VideoCapture(self.camera)
         window_name = "Gesture Control"
         cv2.namedWindow(window_name)
-        time_old = 0
-        time_now = 0
 
         recognizer = hgr.hand_gesture_recognizer(
             min_detection_confidence=self.min_detection_confidence,
@@ -61,19 +76,7 @@ class gesture_control:
                 recognizer.get_distance(label.MIDDLE_FINGER_TIP, label.THUMB_TIP)
             )
             frame = cv2.flip(frame, 1)
-            time_now = time.time()
-            fps = 1 / (time_now - time_old)
-            time_old = time_now
-            cv2.putText(
-                frame,
-                str(int(fps)),
-                (10, 30),
-                cv2.FONT_HERSHEY_PLAIN,
-                2,
-                (115, 255, 0),
-                3,
-            )
-            cv2.imshow(window_name, frame)
+            cv2.imshow(window_name, self.fps_display(frame))
 
         source.release()
         cv2.destroyWindow(window_name)

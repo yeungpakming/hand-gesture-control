@@ -1,7 +1,8 @@
 
 # Hand Gesture Control
 
-This project aims to demonstrate real-time hand detection and tracking using MediaPipe and OpenCV. It processes the output data from MediaPipe to control the computer mouse based on hand movements detected in the live video stream.
+#### Video Demo:  <URL HERE>
+This project aims to demonstrate real-time hand detection and tracking, and then control the computer mouse based on hand gesture detected in the live video stream.
 
 ## Features
 

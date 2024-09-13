@@ -1,0 +1,46 @@
+absl-py==2.1.0
+attrs==24.2.0
+Bottleneck @ file:///C:/b/abs_f7un855idq/croot/bottleneck_1709069969633/work
+cffi==1.17.1
+contourpy==1.3.0
+cycler==0.12.1
+flatbuffers==24.3.25
+fonttools==4.53.1
+jax==0.4.31
+jaxlib==0.4.31
+kiwisolver==1.4.7
+matplotlib==3.9.2
+mediapipe==0.10.14
+mkl-service==2.4.0
+mkl_fft @ file:///C:/b/abs_f55mv94vyg/croot/mkl_fft_1725370278455/work
+mkl_random @ file:///C:/b/abs_21ydbzdu8d/croot/mkl_random_1725370276095/work
+ml-dtypes==0.4.0
+mouse==0.7.1
+MouseInfo==0.1.3
+numexpr @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/numexpr_1699503421264/work
+numpy @ file:///C:/b/abs_c1ywpu18ar/croot/numpy_and_numpy_base_1708638681471/work/dist/numpy-1.26.4-cp312-cp312-win_amd64.whl#sha256=becc06674317799ad0165a939a7613809d0bee9bd328a1e4308c57c39cacf08c
+opencv-contrib-python==4.10.0.84
+opencv-python==4.10.0
+opencv-python-headless==4.10.0
+opt-einsum==3.3.0
+packaging==24.1
+pandas @ file:///C:/b/abs_9aotnvvz16/croot/pandas_1718308978393/work/dist/pandas-2.2.2-cp312-cp312-win_amd64.whl#sha256=93959056e02e9855025011adb18394296a58d49e72b9342733b7693a5267c790
+pillow==10.4.0
+protobuf==4.25.4
+PyAutoGUI==0.9.54
+pycparser==2.22
+PyGetWindow==0.0.9
+PyMsgBox==1.0.9
+pyparsing==3.1.4
+pyperclip==1.9.0
+PyRect==0.2.0
+PyScreeze==1.0.1
+python-dateutil @ file:///C:/b/abs_3au_koqnbs/croot/python-dateutil_1716495777160/work
+pytweening==1.2.0
+pytz @ file:///C:/b/abs_6ap4tsz1ox/croot/pytz_1713974360290/work
+scipy==1.14.1
+setuptools==72.1.0
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+sounddevice==0.5.0
+tzdata @ file:///croot/python-tzdata_1690578112552/work
+wheel==0.43.0
